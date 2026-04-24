@@ -1,0 +1,17 @@
+{
+    "name": "小小钢琴 — 乡村儿童音乐启蒙",
+    "short_name": "小小钢琴",
+    "description": "用键盘弹奏美妙的音乐！专为乡村儿童设计的零成本音乐启蒙工具。",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#FF9A56",
+    "theme_color": "#FF6B6B",
+    "orientation": "landscape",
+    "icons": [
+        {
+            "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎹</text></svg>",
+            "sizes": "any",
+            "type": "image/svg+xml"
+        }
+    ]
+}

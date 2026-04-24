@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎵 小小钢琴 — 乡村儿童音乐启蒙</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#A8E6CF">
+</head>
+<body>
+    <!-- 启动引导页：点击后初始化音频上下文 -->
+    <div id="splash-screen" class="splash-screen">
+        <div class="splash-content">
+            <div class="splash-piano-icon">🎹</div>
+            <h1 class="splash-title">小小钢琴</h1>
+            <p class="splash-subtitle">用键盘弹奏美妙的音乐吧！</p>
+            <button id="start-btn" class="splash-start-btn">
+                <span class="btn-icon">🎵</span>
+                开始弹奏
+            </button>
+            <p class="splash-hint">点击按钮后，用键盘上的字母键弹奏</p>
+        </div>
+    </div>
+
+    <!-- 主界面 -->
+    <div id="app" class="app hidden">
+        <!-- 背景装饰层：云朵和浮动音符 -->
+        <div class="bg-decorations">
+            <div class="cloud cloud-1"></div>
+            <div class="cloud cloud-2"></div>
+            <div class="cloud cloud-3"></div>
+            <div class="floating-note note-1">♪</div>
+            <div class="floating-note note-2">♫</div>
+            <div class="floating-note note-3">♩</div>
+            <div class="floating-note note-4">♬</div>
+            <!-- 闪烁星星 -->
+            <div class="sparkle sparkle-1">✦</div>
+            <div class="sparkle sparkle-2">✧</div>
+            <div class="sparkle sparkle-3">⭐</div>
+            <div class="sparkle sparkle-4">✦</div>
+            <div class="sparkle sparkle-5">✧</div>
+            <!-- 小彩虹 -->
+            <div class="mini-rainbow rainbow-1"></div>
+            <div class="mini-rainbow rainbow-2"></div>
+            <!-- 额外浮动音符 -->
+            <div class="floating-note note-5">🎵</div>
+            <div class="floating-note note-6">🎶</div>
+        </div>
+        <!-- 顶部工具栏 -->
+        <header class="toolbar">
+            <div class="toolbar-left">
+                <h1 class="app-title">🎵 小小钢琴</h1>
+            </div>
+            <div class="toolbar-center">
+                <!-- 八度切换 -->
+                <div class="octave-control">
+                    <button id="octave-down" class="ctrl-btn" data-tip="调低音高（左方向键）">◀</button>
+                    <span id="octave-display" class="octave-display">C4 - B5</span>
+                    <button id="octave-up" class="ctrl-btn" data-tip="调高音高（右方向键）">▶</button>
+                </div>
+                <!-- 标注模式切换 -->
+                <button id="label-toggle" class="ctrl-btn label-btn" data-tip="切换琴键上的文字：唱名(do re mi) / 字母(C D E)">
+                    <span id="label-text">唱名</span>
+                </button>
+            </div>
+            <div class="toolbar-right">
+            </div>
+        </header>
+
+        <!-- 示范曲目区域（默认展示） -->
+        <div id="demo-panel" class="demo-panel">
+            <div class="song-carousel">
+                <button id="carousel-prev" class="carousel-arrow carousel-prev" aria-label="向左滚动">◀</button>
+                <div id="song-list" class="song-list">
+                    <!-- 动态生成 -->
+                </div>
+                <button id="carousel-next" class="carousel-arrow carousel-next" aria-label="向右滚动">▶</button>
+            </div>
+            <div class="demo-controls">
+                <button id="demo-play-btn" class="ctrl-btn" disabled data-tip="听一遍示范，熟悉旋律">▶ 播放示范</button>
+                <button id="demo-follow-btn" class="ctrl-btn" disabled data-tip="跟着提示按键，轻松弹出好听的歌">🎵 轻松弹</button>
+                <button id="demo-stop-btn" class="ctrl-btn" disabled data-tip="停止当前播放或轻松弹">⏹ 停止</button>
+            </div>
+        </div>
+
+    <!-- 钢琴键盘区域 -->
+    <div class="piano-wrapper">
+            <div id="piano" class="piano">
+                <!-- 动态生成琴键 -->
+            </div>
+        </div>
+
+        <!-- 键盘映射提示 -->
+        <div class="keyboard-hint">
+            <div class="hint-row">
+                <span class="hint-label">低音区：</span>
+                <span class="hint-keys">
+                    <kbd>Z</kbd><kbd>X</kbd><kbd>C</kbd><kbd>V</kbd><kbd>B</kbd><kbd>N</kbd><kbd>M</kbd>
+                </span>
+                <span class="hint-label">黑键：</span>
+                <span class="hint-keys">
+                    <kbd>S</kbd><kbd>D</kbd><kbd>G</kbd><kbd>H</kbd><kbd>J</kbd>
+                </span>
+            </div>
+            <div class="hint-row">
+                <span class="hint-label">高音区：</span>
+                <span class="hint-keys">
+                    <kbd>Q</kbd><kbd>W</kbd><kbd>E</kbd><kbd>R</kbd><kbd>T</kbd><kbd>Y</kbd><kbd>U</kbd>
+                </span>
+                <span class="hint-label">黑键：</span>
+                <span class="hint-keys">
+                    <kbd>2</kbd><kbd>3</kbd><kbd>5</kbd><kbd>6</kbd><kbd>7</kbd>
+                </span>
+            </div>
+            <div class="hint-row">
+                <span class="hint-label">高音区+：</span>
+                <span class="hint-keys">
+                    <kbd>I</kbd><kbd>O</kbd><kbd>P</kbd>
+                </span>
+                <span class="hint-label">黑键：</span>
+                <span class="hint-keys">
+                    <kbd>9</kbd><kbd>0</kbd>
+                </span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 加载提示 -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p id="loading-text">正在加载音色库...</p>
+            <div class="loading-bar">
+                <div id="loading-progress" class="loading-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Service Worker 注册（PWA 离线支持） -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('✅ Service Worker 注册成功'))
+                    .catch(err => console.warn('⚠️ Service Worker 注册失败:', err));
+            });
+        }
+    </script>
+
+    <!-- 脚本 -->
+    <script src="js/lib/Tone.js"></script>
+    <script src="js/constants.js"></script>
+    <script src="js/audio-engine.js"></script>
+    <script src="js/piano-ui.js"></script>
+    <script src="js/keyboard-handler.js"></script>
+    <script src="js/demo-songs.js"></script>
+    <script src="js/guide-mode.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
